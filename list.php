@@ -1,7 +1,7 @@
 <?php
 require 'db.php';
 
-$stmt = $pdo->query("SELECT * FROM files ORDER BY created_at DESC");
+$stmt = $pdo->query('SELECT * FROM files ORDER BY created_at DESC');
 $files = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
@@ -33,20 +33,20 @@ $files = $stmt->fetchAll();
   </div>
   <table>
     <tr>
-      <th>UUID</th>
+      <th>ID</th>
       <th>Filename</th>
       <th>Link</th>
       <th>QR Code</th>
     </tr>
-    <?php foreach ($files as $file): ?>
-      <?php $url = 'http://localhost:8000/files/' . $file['filename']; ?>
+    <?php foreach ($files as $file) { ?>
+      <?php $url = getenv('APP_URL').'/files/'.$file['filename']; ?>
       <tr>
-        <td><?= htmlspecialchars($file['uuid']) ?></td>
+        <td><?= htmlspecialchars($file['id']) ?></td>
         <td><?= htmlspecialchars($file['filename']) ?></td>
         <td><a href="<?= $url ?>" target="_blank">Open PDF</a></td>
         <td><img src="qrcode.php?text=<?= urlencode($url) ?>" class="qr" alt="QR Code"></td>
       </tr>
-    <?php endforeach; ?>
+    <?php } ?>
   </table>
 </body>
 </html>
