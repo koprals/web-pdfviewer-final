@@ -1,7 +1,9 @@
 services:
   - type: web
     name: web-pdfviewer-simetri
-    env: php
+    env: docker
+    plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile
     buildCommand: ""
-    startCommand: ""
-    staticPublishPath: public
+    startCommand: "apache2-foreground"
