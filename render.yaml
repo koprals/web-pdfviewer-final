@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: web-pdfviewer-simetri
+    env: php
+    buildCommand: ""
+    startCommand: ""
+    staticPublishPath: public
