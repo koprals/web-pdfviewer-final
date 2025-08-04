@@ -2,9 +2,10 @@
 
 require_once 'vendor/autoload.php';
 
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
-use Endroid\QrCode\Logo\Logo;
-use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
 
 if (! isset($_GET['text'])) {
@@ -14,22 +15,24 @@ if (! isset($_GET['text'])) {
 
 $text = $_GET['text'];
 
-// Buat QR Code
-$qr = QrCode::create($text)
-    ->setSize(300)
-    ->setMargin(10)
-    ->setErrorCorrectionLevel(new ErrorCorrectionLevelHigh); // Gunakan tingkat koreksi tinggi
+// QR Code configuration using Builder
+$builder = new Builder(
+    writer: new PngWriter,
+    writerOptions: [],
+    validateResult: false,
+    data: $text,
+    encoding: new Encoding('UTF-8'),
+    errorCorrectionLevel: ErrorCorrectionLevel::High,
+    size: 300,
+    margin: 10,
+    roundBlockSizeMode: RoundBlockSizeMode::Margin,
+    logoPath: __DIR__.'/logo.png',
+    logoResizeToWidth: 80,
+    logoPunchoutBackground: true,
+);
 
-$writer = new PngWriter;
-
-// Tambahkan logo
-$logoPath = __DIR__.'/logo.png';
-if (file_exists($logoPath)) {
-    $logo = Logo::create($logoPath)->setResizeToWidth(60); // Sesuaikan ukuran logo
-    $result = $writer->write($qr, null, $logo);
-} else {
-    $result = $writer->write($qr);
-}
+$result = $builder->build();
 
 header('Content-Type: image/png');
 echo $result->getString();
+exit;
