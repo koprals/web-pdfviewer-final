@@ -29,7 +29,7 @@ $files = $stmt->fetchAll();
 <body>
   <div class="top-bar">
     <h2>List of Uploaded PDFs</h2>
-    <a href="index.php" class="upload-btn">+ Upload Baru</a>
+    <a href="addfiles.php" class="upload-btn">+ Upload Baru</a>
   </div>
   <table>
     <tr>
